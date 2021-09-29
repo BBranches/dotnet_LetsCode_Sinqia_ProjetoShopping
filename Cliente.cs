@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace dotnet_LetsCode__Sinqia_ProjetoShopping
+namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
     class Cliente : ICliente
     {
         public string nome;
-        public long CPF{get;set;}
+        public long CPF { get; set; }
 
         public Cliente(long cpf, string nome)
         {

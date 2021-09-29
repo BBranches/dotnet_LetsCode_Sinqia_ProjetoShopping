@@ -1,9 +1,9 @@
 using System;
 
-namespace dotnet_LetsCode__Sinqia_ProjetoShopping
+namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
     public interface IAlimentacao : ILoja
     {
-        void PrepararPedido();
+        void PrepararPedido(string produto);
     }
 }

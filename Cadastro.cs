@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace dotnet_LetsCode__Sinqia_ProjetoShopping
+namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
     class Cadastro
     {
         List<ILoja> lojas;
         List<ICliente> clientes;
+        List<IProduto> produtos;
 
         public Cadastro(List<ILoja> lojas) {
             this.lojas = lojas;
@@ -17,6 +15,11 @@ namespace dotnet_LetsCode__Sinqia_ProjetoShopping
 
         public Cadastro(List<ICliente> clientes){
             this.clientes = clientes;
+        }
+
+        public Cadastro(List<IProduto> produtos, List<ILoja> lojas){
+            this.produtos = produtos;
+            this.lojas = lojas;
         }
 
         public void SelectOption(int option) {            
@@ -29,26 +32,26 @@ namespace dotnet_LetsCode__Sinqia_ProjetoShopping
                     break;
                 case 1:
                     CadastrarLojaDepartamento();
-                    menu.MenuGeral(lojas);
+                    menu.MenuLojas(lojas);
                     break;
                 case 2:
                     CadastrarSelfService();
-                    menu.MenuGeral(lojas);
+                    menu.MenuLojas(lojas);
                     break;
                 case 3:
                     CadastrarFastFood();
-                    menu.MenuGeral(lojas);
+                    menu.MenuLojas(lojas);
                     break;
                 case 4:
                     ListarLojasCadastradas();
-                    menu.MenuGeral(lojas);
+                    menu.MenuLojas(lojas);
                     break;
                 case 5:
-                    menu.MenuGeral(lojas);
+                    menu.MenuLojas(lojas);
                     break;
                 default:
                     Console.WriteLine("Opção incorreta, tente novamente\n");
-                    menu.MenuGeral(lojas);
+                    menu.MenuLojas(lojas);
                     break;
             }
         }
@@ -60,153 +63,154 @@ namespace dotnet_LetsCode__Sinqia_ProjetoShopping
             case 0:
                 menu.MenuInicial();
                 break;
-
             case 1:
                 CadastrarCliente();
                 menu.MenuClientes(clientes);
-                break;
-                
+                break;  
             case 2:
                 ListarClientesCadastrados();
                 menu.MenuClientes(clientes);
                 break;
-
-            case 3:
-                Console.WriteLine("Ainda não implementado :)");
-                menu.MenuClientes(clientes);
-            break;
             default:
                 Console.WriteLine("Opção incorreta, tente novamente\n");
                 menu.MenuClientes(clientes);
                 break;
-            }
+            }    
+        }
 
-            
-            
+        public void SelectOptionProduto(int option) { 
+            Menu menu = new Menu();
+
+            switch(option){
+            case 0:
+                menu.MenuInicial();
+                break;
+            case 1:
+                RealizarCompra();
+                menu.MenuCompra(produtos, lojas);
+                break;     
+            case 2:
+                ListarProdutos();
+                menu.MenuCompra(produtos, lojas);
+                break;
+            default:
+                Console.WriteLine("Opção incorreta, tente novamente\n");
+                menu.MenuCompra(produtos, lojas);
+                break;
+            }    
         }
       
-        void CadastrarCliente(){
+        void CadastrarCliente() {
             string nomeCliente = "";
             long CPF;
-            bool novamente = false;
 
-            do{
-                Console.Write("Digite o nome do cliente a ser cadastrado: ");
+            do {
+                Console.Write("\nDigite o nome do cliente a ser cadastrado: ");
                 nomeCliente = Console.ReadLine();
 
                 Console.Write("Digite o CPF do cliente: ");
                 CPF = Convert.ToInt64(Console.ReadLine());
                 clientes.Add(new Cliente(CPF, nomeCliente));
 
-                Console.Write("\nDeseja cadastrar outro Cliente? Sim ou não (sem acento): ");
-                string simNao = Console.ReadLine().ToUpper();
-                switch (simNao) {
-                    case "SIM":
-                        novamente = true;
-                        break;
-                    case "NAO": 
-                        novamente = false;
-                        break;
-                    default:
-                        Console.WriteLine("Opção Invalida, não haverá novo cadastro");
-                        novamente = false;
-                        break;
+                Console.WriteLine("\nDeseja cadastrar outro Cliente?");
+
+            } while(AdicionarNovo());
+        }
+
+        void RealizarCompra() {
+            string nomeProduto = "";
+            string nomeLoja = "";
+            double preco;
+
+            Console.WriteLine("\nQual o tipo de Loja: ");
+            Console.WriteLine("1 - Fast Food");
+            Console.WriteLine("2 - Self Service");
+            Console.WriteLine("2 - Loja Departamento");
+            Console.Write("Opção: ");
+            int opcao = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("\nDigite o nome da Loja que a compra será realizada: ");
+            nomeLoja = Console.ReadLine();
+            
+            do {
+                Console.Write("\nDigite o nome do produto que deseja comprar: ");
+                nomeProduto = Console.ReadLine();
+
+                Console.Write("Digite o preço do produto: ");
+                preco = Convert.ToDouble(Console.ReadLine());
+
+                produtos.Add(new Produto(nomeProduto, nomeLoja, preco));
+                
+                if(opcao == 1) {
+                    FastFood fastFood = new FastFood(nomeLoja);
+                    fastFood.PrepararPedido(nomeProduto);
+                } else if(opcao == 2) {
+                    SelfService selfService = new SelfService(nomeLoja);
+                    selfService.PrepararPedido(nomeProduto);
+                } else {
+                    LojaDepartamento lojaDepartamento = new LojaDepartamento(nomeLoja);
                 }
-            }while(novamente);
+
+                Console.WriteLine("\nDeseja adicionar outro produto no carrinho?");
+                
+            } while(AdicionarNovo());
         }
 
         void CadastrarLojaDepartamento()
         {           
             string nomeLoja = "";
             double aluguelLoja;
-            bool novamente = false;
 
             do {
-                Console.Write("Digite o nome da loja de departamento que deseja cadastrar: ");
+                Console.Write("\nDigite o nome da loja de departamento que deseja cadastrar: ");
                 nomeLoja = Console.ReadLine();
 
                 Console.Write("Digite o valor do aluguel da loja de departamento: ");
                 aluguelLoja = Convert.ToDouble(Console.ReadLine());
-                lojas.Add(new FastFood(nomeLoja, aluguelLoja));
-                
-                Console.Write("\nDeseja cadastrar outra loja? Sim ou não (sem acento): ");
-                string simNao = Console.ReadLine().ToUpper();
-                switch (simNao) {
-                    case "SIM":
-                        novamente = true;
-                        break;
-                    case "NAO": 
-                        novamente = false;
-                        break;
-                    default:
-                        Console.WriteLine("Opção Invalida, não haverá novo cadastro");
-                        novamente = false;
-                        break;
-                }
 
-            } while(novamente);
+                lojas.Add(new LojaDepartamento(nomeLoja, aluguelLoja));
+                
+                Console.WriteLine("\nDeseja cadastrar outra loja?");
+
+            } while(AdicionarNovo());
         }
 
         void CadastrarFastFood()
         {           
             string nomeLoja = "";
             double aluguelLoja;
-            bool novamente = false;
 
             do {
-                Console.Write("Digite o nome do FastFood que deseja cadastrar: ");
+                Console.Write("\nDigite o nome do FastFood que deseja cadastrar: ");
                 nomeLoja = Console.ReadLine();
+
                 Console.Write("Digite o valor do aluguel do FastFood: ");
                 aluguelLoja = Convert.ToDouble(Console.ReadLine());
+
                 lojas.Add(new FastFood(nomeLoja, aluguelLoja));
                 
-                Console.Write("\nDeseja cadastrar outro FastFood? Sim ou não (sem acento): ");
-                string simNao = Console.ReadLine().ToUpper();
-                switch (simNao) {
-                    case "SIM":
-                        novamente = true;
-                        break;
-                    case "NAO": 
-                        novamente = false;
-                        break;
-                    default:
-                        Console.WriteLine("Opção Invalida, não haverá novo cadastro");
-                        novamente = false;
-                        break;
-                }
+                Console.WriteLine("\nDeseja cadastrar outro FastFood?");
 
-            } while(novamente);
+            } while(AdicionarNovo());
         }
 
         void CadastrarSelfService()
         {           
             string nomeLoja = "";
             double aluguelLoja;
-            bool novamente = false;
 
             do {
-                Console.Write("Digite o nome do Self Service que deseja cadastrar: ");
+                Console.Write("\nDigite o nome do Self Service que deseja cadastrar: ");
                 nomeLoja = Console.ReadLine();
+                
                 Console.Write("Digite o valor do aluguel do Self Service: ");
                 aluguelLoja = Convert.ToDouble(Console.ReadLine());
-                lojas.Add(new FastFood(nomeLoja, aluguelLoja));
-                
-                Console.Write("\nDeseja cadastrar outro Self Service? Sim ou não (sem acento): ");
-                string simNao = Console.ReadLine().ToUpper();
-                switch (simNao) {
-                    case "SIM":
-                        novamente = true;
-                        break;
-                    case "NAO": 
-                        novamente = false;
-                        break;
-                    default:
-                        Console.WriteLine("Opção Invalida, não haverá novo cadastro");
-                        novamente = false;
-                        break;
-                }
 
-            } while(novamente);
+                lojas.Add(new SelfService(nomeLoja, aluguelLoja));
+                
+                Console.WriteLine("\nDeseja cadastrar outro Self Service?");
+
+            } while(AdicionarNovo());
         }
 
         void ListarLojasCadastradas()
@@ -223,6 +227,40 @@ namespace dotnet_LetsCode__Sinqia_ProjetoShopping
             {
                 Console.WriteLine($"Nome: {cliente.Nome} - CPF: {cliente.CPF}");
             }
+        }
+
+        void ListarProdutos()
+        {
+            double valorProdutos = 0;
+            foreach (IProduto produto in produtos)
+            { 
+                Console.WriteLine($"Loja: {produto.NomeLoja} - Produto: {produto.Nome} - Preço: {produto.Preco}");
+                valorProdutos += produto.Preco;
+            } 
+            Console.WriteLine($"Valor total: {valorProdutos}"); 
+        }
+
+        bool AdicionarNovo() {
+            bool adicionar = false;
+
+            Console.WriteLine("1 - Sim ");
+            Console.WriteLine("2 - Não ");
+            Console.Write("Opção: ");
+            int opcao = Convert.ToInt32(Console.ReadLine());
+
+            switch (opcao) {
+                case 1:
+                    adicionar = true;
+                    break;
+                case 2: 
+                    adicionar = false;
+                    break;
+                default:
+                    Console.WriteLine("Opção Invalida, não haverá novo cadastro");
+                    adicionar = false;
+                    break;
+            }       
+            return adicionar;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace dotnet_LetsCode__Sinqia_ProjetoShopping
+namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
     class Program
     {
