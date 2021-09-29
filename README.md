@@ -1,0 +1,1 @@
+# dotnet_LetsCode__Sinqia_ProjetoShopping

@@ -8,7 +8,7 @@ namespace dotnet_LetsCode__Sinqia_ProjetoShopping
         static void Main(string[] args)
         {
             Menu menu = new Menu();
-            menu.MenuGeral(new List<ILoja>());
+            menu.MenuInicial();
         }
     }
 }
