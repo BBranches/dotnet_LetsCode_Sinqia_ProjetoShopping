@@ -9,8 +9,9 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         List<ICliente> clientes;
         List<IProduto> produtos;
 
-        public Cadastro(List<ILoja> lojas) {
+        public Cadastro(List<ILoja> lojas, List<IProduto> produtos) { // tá repetindo a linha 21??
             this.lojas = lojas;
+            this.produtos = produtos;
         }
 
         public Cadastro(List<ICliente> clientes){
@@ -32,26 +33,31 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     break;
                 case 1:
                     CadastrarLojaDepartamento();
-                    menu.MenuLojas(lojas);
+                    menu.MenuLojas(lojas, produtos); 
                     break;
                 case 2:
                     CadastrarSelfService();
-                    menu.MenuLojas(lojas);
+                    menu.MenuLojas(lojas, produtos);
                     break;
                 case 3:
                     CadastrarFastFood();
-                    menu.MenuLojas(lojas);
+                    menu.MenuLojas(lojas, produtos);
                     break;
-                case 4:
-                    ListarLojasCadastradas();
-                    menu.MenuLojas(lojas);
+                case 4: 
+                    CadastrarProduto();
+                    menu.MenuLojas(lojas, produtos);
                     break;
                 case 5:
-                    menu.MenuLojas(lojas);
+                    ListarLojasCadastradas();
+                    menu.MenuLojas(lojas, produtos);
+                    break;
+                case 6: 
+                    ListarProdutosCadastrados();
+                    menu.MenuLojas(lojas, produtos);
                     break;
                 default:
                     Console.WriteLine("Opção incorreta, tente novamente\n");
-                    menu.MenuLojas(lojas);
+                    menu.MenuLojas(lojas, produtos);
                     break;
             }
         }
@@ -173,6 +179,48 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 Console.WriteLine("\nDeseja cadastrar outra loja?");
 
             } while(AdicionarNovo());
+        }
+
+        void CadastrarProduto()
+        {
+            Menu menu = new Menu();
+            string nomeLoja;
+            string nomeProduto;
+            double preco;
+
+            do
+            {
+                Console.Write("\nDigite o nome da loja em que será cadastrado o produto: ");
+                nomeLoja = Console.ReadLine();
+
+                int indexLoja = lojas.FindIndex(loja => loja.Nome == nomeLoja);
+
+                if (indexLoja == -1)
+                {
+                    Console.WriteLine("Loja não encontrada. Tente novamente ou cadastre a loja.");
+                    menu.MenuLojas(lojas,produtos); 
+                }
+
+                else
+                {
+                    Console.Write("Digite o nome do produto: ");
+                    nomeProduto = Console.ReadLine();
+
+                    Console.Write("Digite o preço do produto: ");
+                    preco = Convert.ToDouble(Console.ReadLine());
+                    produtos.Add(new Produto(nomeProduto, nomeLoja, preco));
+
+                    Console.WriteLine("\n Deseja cadastrar um novo produto?");
+                }
+            }while (AdicionarNovo());
+        }
+
+        void ListarProdutosCadastrados()
+        {
+            foreach (IProduto produto in produtos)
+            {
+                Console.WriteLine($"Loja: {produto.NomeLoja} - Produto: {produto.Nome} - Preço: R${produto.Preco}");
+            }
         }
 
         void CadastrarFastFood()

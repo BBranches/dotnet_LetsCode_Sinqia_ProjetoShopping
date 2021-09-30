@@ -23,7 +23,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     menu.MenuClientes(new List<ICliente>());
                     break;
                 case 2:
-                    menu.MenuLojas(new List<ILoja>());
+                    menu.MenuLojas(new List<ILoja>(), new List<IProduto>()); 
                     break;
                 case 3:
                     menu.MenuCompra(new List<IProduto>(), new List<ILoja>());
@@ -34,14 +34,16 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             }
         }
 
-        public void MenuLojas(List<ILoja> lojas) {
-            Cadastro novaLoja = new Cadastro(lojas);
+        public void MenuLojas(List<ILoja> lojas, List<IProduto> produtos) { 
+            Cadastro novaLoja = new Cadastro(lojas, produtos); 
             
             Console.WriteLine("\nBem vindo ao Cadastro de Lojas!");
             Console.WriteLine("1 - Cadastrar Loja de Departamento");
             Console.WriteLine("2 - Cadastrar Self Service");
             Console.WriteLine("3 - Cadastrar Fast Food");
-            Console.WriteLine("4 - Listar lojas cadastradas");
+            Console.WriteLine("4 - Cadastrar produto"); 
+            Console.WriteLine("5 - Listar lojas cadastradas");
+            Console.WriteLine("6 - Listar produtos cadastrados"); 
             Console.WriteLine("0 - Voltar ao menu inicial do shopping");
             Console.Write("Opção: ");
             novaLoja.SelectOption(Convert.ToInt32(Console.ReadLine()));
