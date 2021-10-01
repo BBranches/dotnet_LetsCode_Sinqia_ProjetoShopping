@@ -4,9 +4,11 @@ using System.Collections.Generic;
 namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
      class Menu {
+        public static List<ICliente> listaCliente = new List<ICliente>();
+        public static List<ILoja> listaLoja = new List<ILoja>();
+        public static List<IProduto> listaProduto = new List<IProduto>();
 
         public void MenuInicial(){
-            Menu menu = new Menu();
             Console.WriteLine("\nBem vindo ao Shopping!");
             Console.WriteLine("1 - Cadastro de clientes");
             Console.WriteLine("2 - Cadastro de lojas");
@@ -20,13 +22,13 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     Environment.Exit(0);
                     break;
                 case 1:
-                    menu.MenuClientes(new List<ICliente>());
+                    MenuClientes(listaCliente);
                     break;
                 case 2:
-                    menu.MenuLojas(new List<ILoja>(), new List<IProduto>()); 
+                    MenuLojas(listaLoja,listaProduto); 
                     break;
                 case 3:
-                    menu.MenuCompra(new List<IProduto>(), new List<ILoja>());
+                    MenuCompra(listaProduto,listaLoja);
                     break;
                 default:
                     Console.WriteLine("Opção inválida");
@@ -51,6 +53,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 
         public void MenuClientes(List<ICliente> clientes){
             Cadastro novoCliente = new Cadastro(clientes);
+            
             Console.WriteLine("\nBem vindo ao cadastro de clientes!");
             Console.WriteLine("1 - Cadastrar novo cliente");
             Console.WriteLine("2 - Listar clientes cadastrados");

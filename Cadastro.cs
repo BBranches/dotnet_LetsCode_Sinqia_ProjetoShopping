@@ -8,7 +8,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         List<ILoja> lojas;
         List<ICliente> clientes;
         List<IProduto> produtos;
-
+        Menu menu = new Menu();
         public Cadastro(List<ILoja> lojas, List<IProduto> produtos) { // tá repetindo a linha 21??
             this.lojas = lojas;
             this.produtos = produtos;
@@ -24,7 +24,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         }
 
         public void SelectOption(int option) {            
-            Menu menu = new Menu();
 
             switch (option)
             {
@@ -63,7 +62,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         }
 
         public void SelectOptionCliente(int option) { 
-            Menu menu = new Menu();
 
             switch(option){
             case 0:
@@ -85,7 +83,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         }
 
         public void SelectOptionProduto(int option) { 
-            Menu menu = new Menu();
 
             switch(option){
             case 0:
@@ -131,7 +128,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             Console.WriteLine("\nQual o tipo de Loja: ");
             Console.WriteLine("1 - Fast Food");
             Console.WriteLine("2 - Self Service");
-            Console.WriteLine("2 - Loja Departamento");
+            Console.WriteLine("3 - Loja Departamento");
             Console.Write("Opção: ");
             int opcao = Convert.ToInt32(Console.ReadLine());
 
@@ -183,7 +180,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 
         void CadastrarProduto()
         {
-            Menu menu = new Menu();
             string nomeLoja;
             string nomeProduto;
             double preco;
