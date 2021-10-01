@@ -18,15 +18,13 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public string Nome 
         {
             get { return nome; }
-            set { nome = value; }
-         
+            set { nome = value; }  
         }
 
         public string NomeLoja 
         {
             get { return nomeLoja; }
             set { nomeLoja = value; }
-         
         }
 
         public double Preco
