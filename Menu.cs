@@ -8,12 +8,14 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public static List<ILoja> listaLoja = new List<ILoja>();
         public static List<IProduto> listaProduto = new List<IProduto>();
         public static List<IProduto> produtosCompradosTotal = new List<IProduto>();
+        public static List<IPassagem> listaPassagem = new List<IPassagem>();
 
         public void MenuInicial(){
             Console.WriteLine("\nBem vindo ao Shopping!");
             Console.WriteLine("1 - Cadastro de clientes");
             Console.WriteLine("2 - Cadastro de lojas");
-            Console.WriteLine("3 - Realizar compra");
+            Console.WriteLine("3 - Comprar Passagem Aerea");
+            Console.WriteLine("4 - Realizar compra");
             Console.WriteLine("0 - Sair do Shopping");
             Console.Write("Opção: ");
 
@@ -29,6 +31,9 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     MenuLojas(listaLoja, listaProduto); 
                     break;
                 case 3:
+                    MenuPassagem(listaPassagem);
+                    break;
+                case 4:
                     MenuCompra(listaLoja, listaProduto, produtosCompradosTotal);
                     break;
                 default:
@@ -71,6 +76,17 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             Console.WriteLine("0 - Voltar ao menu inicial do Shopping");
             Console.Write("Opção: ");
             novaCompra.SelectOptionProduto(Convert.ToInt32(Console.ReadLine()));
+        }
+
+        public void MenuPassagem(List<IPassagem> passagens){
+            Cadastro novaPassagem = new Cadastro(passagens);
+
+            Console.WriteLine("\nBem vindo a Compra de passagens!");
+            Console.WriteLine("1 - Preencher Passagem");
+            Console.WriteLine("2 - Ver Passagem");
+            Console.WriteLine("0 - Voltar ao menu inicial do shopping");
+            Console.Write("Opção: ");
+            novaPassagem.SelectOptionPassagem(Convert.ToInt32(Console.ReadLine()));
         }
 
     }
