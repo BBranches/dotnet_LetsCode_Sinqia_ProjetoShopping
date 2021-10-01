@@ -6,10 +6,11 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
     class Cadastro
     {
         public static List<ILoja> lojas;
-        List<ICliente> clientes;
+        public static List<ICliente> clientes;
         public static List<IProduto> produtos;
-        List<IProduto> produtosComprados = new List<IProduto>();
-        List<IPassagem> passagens;
+        public static List<IProduto> produtosComprados = new List<IProduto>();
+        public static List<IPassagem> passagens;
+        public static List<IPassageiro> passageiros;
 
         Menu menu = new Menu();
 
@@ -19,11 +20,12 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         }
 
         public Cadastro(List<ICliente> clientes){
-            this.clientes = clientes;
-        }
+            Cadastro.clientes = clientes;
+        }        
 
-        public Cadastro(List<IPassagem> passagens){
-            this.passagens = passagens;
+        public Cadastro(List<IPassagem> passagens, List<IPassageiro> passageiros){
+            Cadastro.passageiros = passageiros;
+            Cadastro.passagens = passagens;
         }
 
         public void SelectOption(int option) {            
@@ -92,16 +94,24 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 menu.MenuInicial();
                 break;
             case 1:
-                CadastrarPassagem();
-                menu.MenuPassagem(passagens);
+                CadastrarPassageiro();
+                menu.MenuPassagem(passagens, passageiros);
                 break;
             case 2:
+                CadastrarPassagem();
+                menu.MenuPassagem(passagens, passageiros);
+                break;    
+            case 3:
                 ListarPassagensCadastradas();
-                menu.MenuPassagem(passagens);
+                menu.MenuPassagem(passagens, passageiros);
                 break;
+            case 4:
+                ListarPassageirosCadastrados();
+                menu.MenuPassagem(passagens, passageiros);
+                break;    
             default:
                 Console.WriteLine("Opção incorreta, tente novamente\n");
-                menu.MenuPassagem(passagens);
+                menu.MenuPassagem(passagens, passageiros);
                 break;
             }
         }
@@ -119,6 +129,23 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 clientes.Add(new Cliente(CPF, nomeCliente));
 
                 Console.WriteLine("\nDeseja cadastrar outro Cliente?");
+
+            } while(AdicionarNovo());            
+        }
+
+        void CadastrarPassageiro() {
+            string nomePassageiro = "";
+            long CPF;
+
+            do {
+                Console.Write("\nDigite o nome do passageiro a ser cadastrado: ");
+                nomePassageiro = Console.ReadLine();
+
+                Console.Write("Digite o CPF do passageiro: ");
+                CPF = Convert.ToInt64(Console.ReadLine());
+                passageiros.Add(new Passageiro(nomePassageiro, CPF));
+
+                Console.WriteLine("\nDeseja cadastrar outro Passageiro?");
 
             } while(AdicionarNovo());
         }
@@ -165,7 +192,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 if (indexCPF == 0)
                 {
                     Console.WriteLine("Passageiro já cadastrado. Verifique os cadastros realizados ou digite outro CPF.");
-                    menu.MenuPassagem(passagens);
+                    menu.MenuPassagem(passagens, passageiros);
                 }
 
                 else
@@ -241,6 +268,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 Console.WriteLine($"Passageiro(a): {passagem.NomePassageiro} - CPF: {passagem.CPF} - Nº de Passagem: {passagem.NumeroPassagem}");
                 Console.WriteLine($"Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Número do assento: {passagem.NumeroAssento}");
                 Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - horario de Chegada: {passagem.HorarioChegada}");
+                Console.WriteLine($"Peso pagagem");
             }
         }
 
@@ -309,6 +337,14 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             foreach (ICliente cliente in clientes)
             {
                 Console.WriteLine($"Nome: {cliente.Nome} - CPF: {cliente.CPF}");
+            }
+        }
+
+        void ListarPassageirosCadastrados()
+        {
+            foreach (IPassageiro passageiro in passageiros)
+            {
+                Console.WriteLine($"Nome: {passageiro.NomePassageiro} - CPF: {passageiro.CPF}");
             }
         }
 

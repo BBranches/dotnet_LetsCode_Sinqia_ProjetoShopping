@@ -16,6 +16,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         string Origem { get; set; }
         string Destino { get; set; }
         double HorarioPartida { get; set; }
-        double HorarioChegada { get; set; }
+        double HorarioChegada { get; set; }        
     }
 }

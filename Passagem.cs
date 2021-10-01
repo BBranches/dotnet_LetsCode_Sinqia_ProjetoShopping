@@ -16,9 +16,10 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         string origem;
         string destino;
         double horarioPartida;
-        double horarioChegada;
+        double horarioChegada;        
 
-        public Passagem (string nomePassageiro, long cpf, int numeroPassagem, int numeroVoo, string companhia, int numeroAssento, string origem, string destino, double horarioPartida, double horarioChegada)
+        public Passagem (string nomePassageiro, long cpf, int numeroPassagem, int numeroVoo, string companhia, int numeroAssento, string origem, string destino, 
+        double horarioPartida, double horarioChegada)
         {
             this.NomePassageiro = nomePassageiro;
             this.CPF = cpf;
@@ -29,7 +30,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             this.Origem = origem;
             this.Destino = destino;
             this.HorarioPartida = horarioPartida;
-            this.HorarioChegada = horarioChegada;
+            this.HorarioChegada = horarioChegada;                                
         }
 
         public string NomePassageiro
@@ -91,5 +92,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             get { return horarioChegada; }
             set { horarioChegada = value; }
         }
+        
     }
 }

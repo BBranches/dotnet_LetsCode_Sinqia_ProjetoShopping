@@ -9,12 +9,13 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public static List<IProduto> listaProduto = new List<IProduto>();
         public static List<IProduto> produtosCompradosTotal = new List<IProduto>();
         public static List<IPassagem> listaPassagem = new List<IPassagem>();
+        public static List<IPassageiro> listaPassageiro = new List<IPassageiro>();
 
         public void MenuInicial(){
             Console.WriteLine("\nBem vindo ao Shopping!");
             Console.WriteLine("1 - Cadastro de clientes");
-            Console.WriteLine("2 - Cadastro de lojas");
-            Console.WriteLine("3 - Comprar Passagem Aerea");
+            Console.WriteLine("2 - Área de lojas");
+            Console.WriteLine("3 - Área de passagens");
             Console.WriteLine("4 - Realizar compra");
             Console.WriteLine("0 - Sair do Shopping");
             Console.Write("Opção: ");
@@ -31,7 +32,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     MenuLojas(listaLoja, listaProduto); 
                     break;
                 case 3:
-                    MenuPassagem(listaPassagem);
+                    MenuPassagem(listaPassagem, listaPassageiro);
                     break;
                 case 4:
                     MenuCompra(listaLoja, listaProduto, produtosCompradosTotal);
@@ -73,17 +74,20 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             Console.WriteLine("\nRealizar compras:");
             Console.WriteLine("1 - Comprar em uma loja");
             Console.WriteLine("2 - Listar todos produtos comprados no Shopping");
+            Console.WriteLine("3 - Comprar passagem");
             Console.WriteLine("0 - Voltar ao menu inicial do Shopping");
             Console.Write("Opção: ");
             novaCompra.SelectOptionProduto(Convert.ToInt32(Console.ReadLine()));
         }
 
-        public void MenuPassagem(List<IPassagem> passagens){
-            Cadastro novaPassagem = new Cadastro(passagens);
+        public void MenuPassagem(List<IPassagem> passagens, List<IPassageiro> passageiros){
+            Cadastro novaPassagem = new Cadastro(passagens, passageiros);
 
-            Console.WriteLine("\nBem vindo a Compra de passagens!");
-            Console.WriteLine("1 - Preencher Passagem");
-            Console.WriteLine("2 - Ver Passagem");
+            Console.WriteLine("\nBem vindo ao Cadastro de passagens!");
+            Console.WriteLine("1 - Cadastrar passageiro(a)");
+            Console.WriteLine("2 - Cadastrar passagem");
+            Console.WriteLine("3 - Listar passageiros(as) cadastrados(as)");
+            Console.WriteLine("4 - Registro de bagagem");
             Console.WriteLine("0 - Voltar ao menu inicial do shopping");
             Console.Write("Opção: ");
             novaPassagem.SelectOptionPassagem(Convert.ToInt32(Console.ReadLine()));
