@@ -47,14 +47,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 Console.WriteLine("Não há produtos disponíveis.");
             } 
             else {
-
-            // Console.WriteLine("\nQual o tipo de Loja: ");
-            // Console.WriteLine("1 - Fast Food");
-            // Console.WriteLine("2 - Self Service");
-            // Console.WriteLine("3 - Loja Departamento");
-            // Console.Write("Opção: ");
-            // int opcao = Convert.ToInt32(Console.ReadLine());
-
                 do {
                     Console.Write("\nDigite o nome do produto: ");
                     nomeProduto = Console.ReadLine();
@@ -66,31 +58,35 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                         Console.WriteLine("Produto não disponível. Tente novamente!");
                     } 
                     else {
-                        var resultado = (from produto in produtos
+                        var produtoBuscado = (from produto in produtos
                                         where produto.Nome == nomeProduto
                                         select produto).FirstOrDefault();
 
-                        produtosComprados.Add(new Produto(nomeProduto, resultado.NomeLoja, resultado.Preco));
-                        produtosCompradosTotal.Add(new Produto(nomeProduto, resultado.NomeLoja, resultado.Preco));
+                        produtosComprados.Add(new Produto(nomeProduto, produtoBuscado.NomeLoja, produtoBuscado.Preco));
+                        produtosCompradosTotal.Add(new Produto(nomeProduto, produtoBuscado.NomeLoja, produtoBuscado.Preco));
+
+                        var lojaBuscada = (from loja in lojas
+                                        where loja.Nome == produtoBuscado.NomeLoja
+                                        select loja).FirstOrDefault();
+                        if(lojaBuscada.TipoLoja == "Fast Food") {
+                            FastFood fastFood = new FastFood(produtoBuscado.NomeLoja);
+                            fastFood.PrepararPedido(nomeProduto);
+                        }
+                        else if(lojaBuscada.TipoLoja == "Self Service") {
+                            SelfService selfService = new SelfService(produtoBuscado.NomeLoja);
+                            selfService.PrepararPedido(nomeProduto);
+                        } else {
+                            LojaDepartamento lojaDepartamento = new LojaDepartamento(produtoBuscado.NomeLoja);
+                            lojaDepartamento.ProcurarNoEstoque();
+                        }
                     }
-
-                    
-
-                        // if(opcao == 1) {
-                        //     FastFood fastFood = new FastFood(nomeLoja);
-                        //     fastFood.PrepararPedido(nomeProduto);
-                        // } else if(opcao == 2) {
-                        //     SelfService selfService = new SelfService(nomeLoja);
-                        //     selfService.PrepararPedido(nomeProduto);
-                        // } else {
-                        //     LojaDepartamento lojaDepartamento = new LojaDepartamento(nomeLoja);
-                        // }
                 
                         Console.WriteLine("\nDeseja adicionar outro produto no carrinho?");
 
                 } while(Cadastro.AdicionarNovo());
                 
                 ListarProdutosComprados(produtosComprados);
+                Console.WriteLine("Venda realizada com sucesso!");
             }
         }
 

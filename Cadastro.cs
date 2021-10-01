@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
@@ -36,26 +37,18 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     menu.MenuInicial();
                     break;
                 case 1:
-                    CadastrarLojaDepartamento();
+                    CadastrarLoja();
                     menu.MenuLojas(lojas, produtos); 
                     break;
                 case 2:
-                    CadastrarSelfService();
-                    menu.MenuLojas(lojas, produtos);
-                    break;
-                case 3:
-                    CadastrarFastFood();
-                    menu.MenuLojas(lojas, produtos);
-                    break;
-                case 4: 
                     CadastrarProduto();
                     menu.MenuLojas(lojas, produtos);
                     break;
-                case 5:
+                case 3:
                     ListarLojasCadastradas();
                     menu.MenuLojas(lojas, produtos);
                     break;
-                case 6: 
+                case 4: 
                     ListarProdutosCadastrados();
                     menu.MenuLojas(lojas, produtos);
                     break;
@@ -102,11 +95,11 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 menu.MenuPassagem(passagens, passageiros);
                 break;    
             case 3:
-                ListarPassagensCadastradas();
+                ListarPassageirosCadastrados();
                 menu.MenuPassagem(passagens, passageiros);
                 break;
             case 4:
-                ListarPassageirosCadastrados();
+                ListarPassagensCadastradas();
                 menu.MenuPassagem(passagens, passageiros);
                 break;    
             default:
@@ -137,40 +130,78 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             string nomePassageiro = "";
             long CPF;
 
+            
             do {
-                Console.Write("\nDigite o nome do passageiro a ser cadastrado: ");
-                nomePassageiro = Console.ReadLine();
+                    Console.Write("Digite o CPF do passageiro: ");
+                    CPF = Convert.ToInt64(Console.ReadLine());
 
-                Console.Write("Digite o CPF do passageiro: ");
-                CPF = Convert.ToInt64(Console.ReadLine());
-                passageiros.Add(new Passageiro(nomePassageiro, CPF));
-
-                Console.WriteLine("\nDeseja cadastrar outro Passageiro?");
+                    int indexCPF = passageiros.FindIndex(passageiro => passageiro.CPF == CPF);
+                    if (indexCPF == 0)
+                    {
+                        Console.WriteLine("Passageiro já cadastrado. Verifique os cadastros realizados ou digite outro CPF.");
+                        menu.MenuPassagem(passagens, passageiros);
+                    }
+                    else {
+                        Console.Write("\nDigite o nome do passageiro a ser cadastrado: ");
+                        nomePassageiro = Console.ReadLine();
+                        passageiros.Add(new Passageiro(nomePassageiro, CPF));
+                    }
+                    Console.WriteLine("\nDeseja cadastrar outro Passageiro?");
 
             } while(AdicionarNovo());
         }
 
-        void CadastrarLojaDepartamento()
+        void CadastrarLoja()
         {           
             string nomeLoja = "";
-            double aluguelLoja;
+            string tipoLoja = "";
 
-            do {
-                Console.Write("\nDigite o nome da loja de departamento que deseja cadastrar: ");
-                nomeLoja = Console.ReadLine();
+            Console.WriteLine("\nQual o tipo de Loja: ");
+            Console.WriteLine("1 - Fast Food");
+            Console.WriteLine("2 - Self Service");
+            Console.WriteLine("3 - Loja Departamento");
+            Console.Write("Opção: ");
+            int opcao = Convert.ToInt32(Console.ReadLine());
+            
+            if(opcao == 1) {
+                do {
+                    Console.Write("\nDigite o nome do Fast Food que deseja cadastrar: ");
+                    nomeLoja = Console.ReadLine();
+                    tipoLoja = "Fast Food";
 
-                Console.Write("Digite o valor do aluguel da loja de departamento: ");
-                aluguelLoja = Convert.ToDouble(Console.ReadLine());
+                    lojas.Add(new FastFood(nomeLoja, tipoLoja));
 
-                lojas.Add(new LojaDepartamento(nomeLoja, aluguelLoja));
+                    Console.WriteLine("\nDeseja cadastrar outro Fast Food?");
+
+                } while(AdicionarNovo());
                 
-                Console.WriteLine("\nDeseja cadastrar outra loja?");
+            } else if(opcao == 2) {
+                do {
+                    Console.Write("\nDigite o nome do Self Service que deseja cadastrar: ");
+                    nomeLoja = Console.ReadLine();
+                    tipoLoja = "Self Service";
 
-            } while(AdicionarNovo());
+                    lojas.Add(new SelfService(nomeLoja, tipoLoja));
+
+                    Console.WriteLine("\nDeseja cadastrar outro Self Service?");
+
+                } while(AdicionarNovo());
+                
+            } else {
+                do {
+                    Console.Write("\nDigite o nome da loja de departamento que deseja cadastrar: ");
+                    nomeLoja = Console.ReadLine();
+                    tipoLoja = "Loja de Departamento";
+
+                    lojas.Add(new LojaDepartamento(nomeLoja, tipoLoja));
+
+                    Console.WriteLine("\nDeseja cadastrar outra loja?");
+
+                } while(AdicionarNovo());   
+            }
         }
 
         void CadastrarPassagem(){
-            string nomePassageiro;
             long cpf;
             int numeroPassagem;
             int numeroVoo;
@@ -182,21 +213,26 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             double horarioChegada;
 
             do{
-                Console.Write("\nDigite o nome do(a) passageiro(a): ");
-                nomePassageiro = Console.ReadLine();
+                Console.Write("\nDigite o CPF do(a) passageiro(a): ");
+                cpf = Convert.ToInt32(Console.ReadLine());
 
-                Console.Write("Digite o CPF do(a) passageiro(a): ");
-                cpf = Convert.ToInt64(Console.ReadLine());
+                int indexPassageiro = passageiros.FindIndex(passageiro => passageiro.CPF == cpf);
 
-                int indexCPF = passagens.FindIndex(passagem => passagem.CPF == cpf);
-                if (indexCPF == 0)
+                if (indexPassageiro == -1)
                 {
-                    Console.WriteLine("Passageiro já cadastrado. Verifique os cadastros realizados ou digite outro CPF.");
+                    Console.WriteLine("Passageiro não cadastrado. Realize o Cadastro de Passageiro!");
                     menu.MenuPassagem(passagens, passageiros);
                 }
+                else {
+                    var resultado = (from passageiro in passageiros
+                                where passageiro.CPF == cpf
+                                select passageiro).FirstOrDefault();
 
-                else
-                {
+
+                // Console.Write("Digite o CPF do(a) passageiro(a): ");
+                // cpf = Convert.ToInt64(Console.ReadLine());
+
+                
                     Console.Write("Digite o número da passagem (com até 10 algarismos): ");
                     numeroPassagem = Convert.ToInt32(Console.ReadLine());
 
@@ -221,7 +257,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     Console.Write("Digite o horário de chegada do voo: ");
                     horarioChegada = Double.Parse(Console.ReadLine());
 
-                    passagens.Add(new Passagem(nomePassageiro, cpf, numeroPassagem, numeroVoo, companhia, numeroAssento, origem, destino, horarioPartida, horarioChegada));
+                    passagens.Add(new Passagem(resultado.NomePassageiro, cpf, numeroPassagem, numeroVoo, companhia, numeroAssento, origem, destino, horarioPartida, horarioChegada));
 
                     Console.WriteLine("\nDeseja cadastrar novo(a) passageiro(a)");
                 }
@@ -267,8 +303,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             {
                 Console.WriteLine($"Passageiro(a): {passagem.NomePassageiro} - CPF: {passagem.CPF} - Nº de Passagem: {passagem.NumeroPassagem}");
                 Console.WriteLine($"Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Número do assento: {passagem.NumeroAssento}");
-                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - horario de Chegada: {passagem.HorarioChegada}");
-                Console.WriteLine($"Peso pagagem");
+                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - horario de Chegada: {passagem.HorarioChegada} - Peso pagagem:");
             }
         }
 
@@ -286,49 +321,11 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             }     
         }
 
-        void CadastrarFastFood()
-        {           
-            string nomeLoja = "";
-            double aluguelLoja;
-
-            do {
-                Console.Write("\nDigite o nome do FastFood que deseja cadastrar: ");
-                nomeLoja = Console.ReadLine();
-
-                Console.Write("Digite o valor do aluguel do FastFood: ");
-                aluguelLoja = Convert.ToDouble(Console.ReadLine());
-
-                lojas.Add(new FastFood(nomeLoja, aluguelLoja));
-                
-                Console.WriteLine("\nDeseja cadastrar outro FastFood?");
-
-            } while(AdicionarNovo());
-        }
-
-        void CadastrarSelfService()
-        {           
-            string nomeLoja = "";
-            double aluguelLoja;
-
-            do {
-                Console.Write("\nDigite o nome do Self Service que deseja cadastrar: ");
-                nomeLoja = Console.ReadLine();
-                
-                Console.Write("Digite o valor do aluguel do Self Service: ");
-                aluguelLoja = Convert.ToDouble(Console.ReadLine());
-
-                lojas.Add(new SelfService(nomeLoja, aluguelLoja));
-                
-                Console.WriteLine("\nDeseja cadastrar outro Self Service?");
-
-            } while(AdicionarNovo());
-        }
-
         public static void ListarLojasCadastradas()
         {
             foreach (ILoja loja in lojas)
             {
-                Console.WriteLine($"Loja: {loja.Nome} - Aluguel: {loja.Aluguel}");
+                Console.WriteLine($"Loja: {loja.Nome} - Tipo: {loja.TipoLoja}");
             }
         }
 

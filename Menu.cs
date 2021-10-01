@@ -14,9 +14,9 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void MenuInicial(){
             Console.WriteLine("\nBem vindo ao Shopping!");
             Console.WriteLine("1 - Cadastro de clientes");
-            Console.WriteLine("2 - Área de lojas");
-            Console.WriteLine("3 - Área de passagens");
-            Console.WriteLine("4 - Realizar compra");
+            Console.WriteLine("2 - Cadastro de lojas e produtos");
+            Console.WriteLine("3 - Realizar compras nas lojas");
+            Console.WriteLine("4 - Aeroporto");    
             Console.WriteLine("0 - Sair do Shopping");
             Console.Write("Opção: ");
 
@@ -32,10 +32,10 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     MenuLojas(listaLoja, listaProduto); 
                     break;
                 case 3:
-                    MenuPassagem(listaPassagem, listaPassageiro);
+                    MenuCompra(listaLoja, listaProduto, produtosCompradosTotal);
                     break;
                 case 4:
-                    MenuCompra(listaLoja, listaProduto, produtosCompradosTotal);
+                    MenuPassagem(listaPassagem, listaPassageiro);
                     break;
                 default:
                     Console.WriteLine("Opção inválida");
@@ -47,12 +47,10 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             Cadastro novaLoja = new Cadastro(lojas, produtos); 
             
             Console.WriteLine("\nBem vindo ao Cadastro de Lojas!");
-            Console.WriteLine("1 - Cadastrar Loja de Departamento");
-            Console.WriteLine("2 - Cadastrar Self Service");
-            Console.WriteLine("3 - Cadastrar Fast Food");
-            Console.WriteLine("4 - Cadastrar produto"); 
-            Console.WriteLine("5 - Listar lojas cadastradas");
-            Console.WriteLine("6 - Listar produtos cadastrados"); 
+            Console.WriteLine("1 - Cadastrar Loja (Fast Food, Self Service e Departamento)");
+            Console.WriteLine("2 - Cadastrar produto nas lojas"); 
+            Console.WriteLine("3 - Listar lojas cadastradas");
+            Console.WriteLine("4 - Listar produtos cadastrados"); 
             Console.WriteLine("0 - Voltar ao menu inicial do shopping");
             Console.Write("Opção: ");
             novaLoja.SelectOption(Convert.ToInt32(Console.ReadLine()));
@@ -73,8 +71,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             CarrinhoCompra novaCompra = new CarrinhoCompra(lojas, produtos, produtosCompradosTotal);
             Console.WriteLine("\nRealizar compras:");
             Console.WriteLine("1 - Comprar em uma loja");
-            Console.WriteLine("2 - Listar todos produtos comprados no Shopping");
-            Console.WriteLine("3 - Comprar passagem");
+            Console.WriteLine("2 - Listar todos produtos comprados");
             Console.WriteLine("0 - Voltar ao menu inicial do Shopping");
             Console.Write("Opção: ");
             novaCompra.SelectOptionProduto(Convert.ToInt32(Console.ReadLine()));
@@ -87,7 +84,8 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             Console.WriteLine("1 - Cadastrar passageiro(a)");
             Console.WriteLine("2 - Cadastrar passagem");
             Console.WriteLine("3 - Listar passageiros(as) cadastrados(as)");
-            Console.WriteLine("4 - Registro de bagagem");
+            Console.WriteLine("4 - Listar passagens cadastrados(as)");
+            Console.WriteLine("5 - Registro de bagagem");
             Console.WriteLine("0 - Voltar ao menu inicial do shopping");
             Console.Write("Opção: ");
             novaPassagem.SelectOptionPassagem(Convert.ToInt32(Console.ReadLine()));

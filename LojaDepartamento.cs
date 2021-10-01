@@ -6,17 +6,17 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
     {
 
         private string nome;
-        private double aluguel = 0;
+        private string tipoLoja;
 
         public LojaDepartamento(string nome)
         {
             this.Nome = nome;
         }
 
-        public LojaDepartamento(string nome, double aluguel)
+        public LojaDepartamento(string nome, string tipoLoja)
         {
             this.Nome = nome;
-            this.Aluguel = aluguel;
+            this.TipoLoja = tipoLoja;
         }
 
         public string Nome 
@@ -25,15 +25,10 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             set { nome = value; } 
         }
 
-        public double Aluguel
+        public string TipoLoja
         {
-            get { return aluguel; }
-            set { aluguel = value; } 
-        }
-
-        public int Numeracao
-        {
-            get { return 101; }
+            get { return tipoLoja; }
+            set { tipoLoja = value; } 
         }
 
         public void Vender()
