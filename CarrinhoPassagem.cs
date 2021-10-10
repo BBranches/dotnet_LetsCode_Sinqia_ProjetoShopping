@@ -10,15 +10,16 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         List<IPassagem> passagens;
         List<IPassagem> passagensDisponiveis = new List<IPassagem>();
         List<IPassageiro> passageiros;
-        List<PassagemComprada> passagensCompradas = new List<PassagemComprada>();
+        List<PassagemComprada> passagensCompradas;
         List<IAeronave> aeronaves;
 
         Menu menu = new Menu();
 
-        public CarrinhoPassagem(List<IPassagem> passagens,List<IPassageiro> passageiros, List<IAeronave> aeronaves){
+        public CarrinhoPassagem(List<IPassagem> passagens,List<IPassageiro> passageiros, List<IAeronave> aeronaves, List<PassagemComprada> passagensCompradas){
             this.passagens = passagens;
             this.passageiros = passageiros;
             this.aeronaves = aeronaves;
+            this.passagensCompradas = passagensCompradas;
         }
 
         public void SelectOptionComprarPassagem(int option){

@@ -11,7 +11,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public static List<IAeronave> listaAeronave = new List<IAeronave>();
         public static List<IPassagem> listaPassagem = new List<IPassagem>();
         public static List<IPassageiro> listaPassageiro = new List<IPassageiro>();
-        public static List<IPassagem> passagensCompradas = new List<IPassagem>();
+        public static List<PassagemComprada> passagensCompradas = new List<PassagemComprada>();
 
         public void MenuInicial(){
             Console.WriteLine("\nBem vindo ao Shopping!");
@@ -110,7 +110,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 
         public void MenuShoppingAirlines(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
             Console.WriteLine("\nBem vindos a Shopping Airlines!:");
-            Console.WriteLine("1 - Cadastrar Passagens");
+            Console.WriteLine("1 - Cadastro de passageiros e passagens");
             Console.WriteLine("2 - Comprar Passagens");
             Console.WriteLine("0 - Voltar ao menu inicial do Aeroporto");
             Console.Write("Opção: ");
@@ -125,7 +125,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     MenuPassagem(listaAeronave, listaPassagem, listaPassageiro);
                     break;
                 case 2:
-                    MenuCompraPassagem(listaPassagem, listaPassageiro, listaAeronave);
+                    MenuCompraPassagem(listaPassagem, listaPassageiro, listaAeronave, passagensCompradas);
                     break;
                 default:
                     Console.WriteLine("Opção inválida");
@@ -169,8 +169,8 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             novaBagagem.SelectOptionBagagem(Convert.ToInt32(Console.ReadLine()));
         }
 
-        public void MenuCompraPassagem(List<IPassagem> passagens, List<IPassageiro> passageiros, List<IAeronave> aeronaves){
-            CarrinhoPassagem novaCompraPassagem = new CarrinhoPassagem(passagens, passageiros, aeronaves);
+        public void MenuCompraPassagem(List<IPassagem> passagens, List<IPassageiro> passageiros, List<IAeronave> aeronaves, List<PassagemComprada> passagensCompradas){
+            CarrinhoPassagem novaCompraPassagem = new CarrinhoPassagem(passagens, passageiros, aeronaves, passagensCompradas);
 
             Console.WriteLine("\nBem vindo à área de compra de passagens da Shopping Airlines!");
             Console.WriteLine("1 - Comprar passagem");
