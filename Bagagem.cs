@@ -7,26 +7,43 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
     public class Bagagem : IBagagem
     {
-        public double peso;
-        public string tipoBagagem;
-
-        public Bagagem(string tipoBagagem, double peso)
+        private string tipoBagagem;
+        private int peso;
+        private string nomePassageiro;
+        private int numeroPassagem;
+        
+        public Bagagem(string tipoBagagem, int peso, string nomePassageiro, int numeroPassagem)
         {
-            this.peso = peso;
+            this.TipoBagagem = tipoBagagem;
+            this.Peso = peso;
+            this.NomePassageiro = nomePassageiro;
+            this.NumeroPassagem = numeroPassagem;
         }
 
-        public double Peso {
+        public int Peso {
             get => peso;
             set {
                 peso = value;
             }
         }
+
         public string TipoBagagem {
             get => tipoBagagem;
             set {
                 tipoBagagem = value;
             }
-        }    
-        
+        } 
+
+        public string NomePassageiro
+        {
+            get { return nomePassageiro; }
+            set { nomePassageiro = value; }
+        } 
+
+        public int NumeroPassagem
+        {
+            get { return numeroPassagem; }
+            set { numeroPassagem = value; }
+        }     
     }
 }

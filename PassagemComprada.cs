@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 {
-    public class Passagem : IPassagem
+    public class PassagemComprada : IPassagem, IPassageiro
     {
+        string nomePassageiro;
+        long cpf;
         int numeroPassagem;
         int numeroVoo;
         string companhia;
@@ -17,8 +19,10 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         int horarioPartida;
         int horarioChegada;        
 
-        public Passagem (int numeroPassagem, int numeroVoo, string companhia, string tipoAeronave, int numeroAssento, string origem, string destino, int horarioPartida, int horarioChegada)
+        public PassagemComprada (string nomePassageiro, long cpf, int numeroPassagem, int numeroVoo, string companhia, string tipoAeronave, int numeroAssento, string origem, string destino, int horarioPartida, int horarioChegada)
         {
+            this.NomePassageiro = nomePassageiro;
+            this.CPF = cpf;
             this.NumeroPassagem = numeroPassagem;
             this.NumeroVoo = numeroVoo;
             this.Companhia = companhia;
@@ -28,6 +32,18 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             this.Destino = destino;
             this.HorarioPartida = horarioPartida;
             this.HorarioChegada = horarioChegada;                                
+        }
+
+        public string NomePassageiro
+        {
+            get { return nomePassageiro; }
+            set { nomePassageiro = value; }
+        }
+
+        public long CPF
+        {
+            get { return cpf; }
+            set { cpf = value; }
         }
         
         public int NumeroPassagem
@@ -82,7 +98,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         {
             get { return horarioChegada; }
             set { horarioChegada = value; }
-        }
-        
+        }     
     }
 }
