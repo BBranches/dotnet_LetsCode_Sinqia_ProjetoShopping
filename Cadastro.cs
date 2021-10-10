@@ -88,52 +88,69 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             
             switch(option){
             case 0:
-                menu.MenuInicial();
+                menu.MenuShoppingAirlines(aeronaves, passagens, passageiros);
                 break;
             case 1:
-                CadastrarAeronave();
-                menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break;
-            case 2:
                 CadastrarPassageiro();
                 menu.MenuPassagem(aeronaves, passagens, passageiros);
                 break;
-            case 3:
+            case 2:
                 CadastrarPassagem();
+                menu.MenuPassagem(aeronaves, passagens, passageiros);
+                break;
+            case 3:
+                ListarPassageirosCadastrados();
                 menu.MenuPassagem(aeronaves, passagens, passageiros);
                 break;  
             case 4:
-                ListarAeronavesCadastradas();
-                menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break;  
-            case 5:
-                ListarPassageirosCadastrados();
-                menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break;
-            case 6:
                 ListarPassagensCadastradas();
                 menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break;    
-            case 7:
-                ComprarPassagem();
-                menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break; 
-            case 8:
-                ListarPassagensCompradas();
-                menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break; 
-            case 9:
-                RegistrarBagagem();
-                menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break; 
-            case 10:
-                ListarBagagensRegistradas();
-                menu.MenuPassagem(aeronaves, passagens, passageiros);
-                break;     
+                break;  
             default:
                 Console.WriteLine("Opção incorreta, tente novamente\n");
                 menu.MenuPassagem(aeronaves, passagens, passageiros);
                 break;
+            }
+        }
+
+        public void SelectOptionHangar(int option){
+            switch(option){
+                case 0:
+                    menu.MenuInicial();
+                    break;
+                case 1:
+                    CadastrarAeronave();
+                    menu.MenuAeroporto(aeronaves, passagens, passageiros);
+                    break;
+                case 2:
+                    ListarAeronavesCadastradas();
+                    menu.MenuPassagem(aeronaves, passagens, passageiros);
+                    break;
+                default:
+                    Console.WriteLine("Opção incorreta, tente novamente\n");
+                    menu.MenuHangar(aeronaves, passagens, passageiros);
+                    break;
+            }
+
+        }
+
+        public void SelectOptionBagagem(int option){
+            switch(option){
+                case 0:
+                    menu.MenuInicial();
+                    break;
+                case 1:
+                    RegistrarBagagem();
+                    menu.MenuAeroporto(aeronaves, passagens, passageiros);
+                    break;
+                case 2:
+                    ListarBagagensRegistradas();
+                    menu.MenuBagagem(aeronaves, passagens, passageiros);
+                    break;
+                default:
+                    Console.WriteLine("Opção incorreta, tente novamente\n");
+                    menu.MenuBagagem(aeronaves, passagens, passageiros);
+                    break;
             }
         }
       
@@ -323,52 +340,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             }while(AdicionarNovo());
         }
 
-        void ComprarPassagem(){
-            long cpf;
-            int numeroPassagem;
-
-            Console.WriteLine("Passageiros cadastrados:");
-            ListarPassageirosCadastrados();
-
-            Console.WriteLine("Passagens disponíveis:");
-            ListarPassagensCadastradas();
-
-            do{
-                Console.Write("\nDigite o CPF do(a) passageiro(a): ");
-                cpf = Convert.ToInt64(Console.ReadLine());
-
-                int indexPassageiro = passageiros.FindIndex(passageiro => passageiro.CPF == cpf);
-
-                Console.Write("\nDigite o número da passagem: ");
-                numeroPassagem = Convert.ToInt32(Console.ReadLine());
-
-                int indexPassagem = passagens.FindIndex(passagem => passagem.NumeroPassagem == numeroPassagem);
-
-                if (indexPassageiro == -1)
-                {
-                    Console.WriteLine("Passageiro não cadastrado. Realize o Cadastro de Passageiro!");
-                    menu.MenuPassagem(aeronaves, passagens, passageiros);
-                }
-                else if(indexPassagem == -1) {
-                    Console.WriteLine("Passagem não disponível!");
-                    menu.MenuPassagem(aeronaves, passagens, passageiros);
-                }
-                else {
-                    var passageiroBuscado = (from passageiro in passageiros
-                                where passageiro.CPF == cpf
-                                select passageiro).FirstOrDefault();
-
-                    var passagemBuscada = (from passagem in passagens
-                                where passagem.NumeroPassagem == numeroPassagem
-                                select passagem).FirstOrDefault();
-                    
-                    passagemComprada.Add(new PassagemComprada(passageiroBuscado.NomePassageiro, passageiroBuscado.CPF, passagemBuscada.NumeroPassagem, passagemBuscada.NumeroVoo, passagemBuscada.Companhia, passagemBuscada.TipoAeronave, passagemBuscada.NumeroAssento, passagemBuscada.Origem, passagemBuscada.Destino, passagemBuscada.HorarioPartida, passagemBuscada.HorarioChegada));
-                    ListarPassagensCompradas();       
-                }
-                Console.WriteLine("\nDeseja comprar outra passagem?");
-            } while(AdicionarNovo());
-        }
-
         void RegistrarBagagem() {
             int numeroPassagem;
             string tipoBagagem;
@@ -388,7 +359,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     Console.WriteLine("Qual o tipo de Bagagem?");
                     Console.WriteLine("1 - De Mão - até 10kg");
                     Console.WriteLine("2 - Despachada - até 23kg");
-                    Console.Write("opção: ");
+                    Console.Write("Opção: ");
                     int opcao = Convert.ToInt32(Console.ReadLine());
 
                     Console.WriteLine("Qual o peso da Bagagem? (kg)");
@@ -448,18 +419,8 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         {
             foreach (IPassagem passagem in passagens)
             {
-                Console.WriteLine($"Nº de Passagem: {passagem.NumeroPassagem} - Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Tipo Aeronave: {passagem.TipoAeronave} - Número do assento: {passagem.NumeroAssento}");
-                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - horario de Chegada: {passagem.HorarioChegada}");
-            }
-        }
-
-        public static void ListarPassagensCompradas()
-        {
-            foreach (PassagemComprada passagem in passagemComprada)
-            {
-                Console.WriteLine($"Nome Passageiro: {passagem.NomePassageiro} - CPF Passageiro: {passagem.CPF}");
-                Console.WriteLine($"Nº de Passagem: {passagem.NumeroPassagem} - Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Tipo Aeronave: {passagem.TipoAeronave} - Número do assento: {passagem.NumeroAssento}");
-                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida}h - horario de Chegada: {passagem.HorarioChegada}h");
+                Console.WriteLine($"Nº da Passagem: {passagem.NumeroPassagem} - Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Tipo Aeronave: {passagem.TipoAeronave} - Número do assento: {passagem.NumeroAssento}");
+                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - Horário de Chegada: {passagem.HorarioChegada}");
             }
         }
 

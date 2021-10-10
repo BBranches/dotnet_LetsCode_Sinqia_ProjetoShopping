@@ -11,6 +11,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public static List<IAeronave> listaAeronave = new List<IAeronave>();
         public static List<IPassagem> listaPassagem = new List<IPassagem>();
         public static List<IPassageiro> listaPassageiro = new List<IPassageiro>();
+        public static List<IPassagem> passagensCompradas = new List<IPassagem>();
 
         public void MenuInicial(){
             Console.WriteLine("\nBem vindo ao Shopping!");
@@ -36,7 +37,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     MenuCompra(listaLoja, listaProduto, produtosCompradosTotal);
                     break;
                 case 4:
-                    MenuPassagem(listaAeronave, listaPassagem, listaPassageiro);
+                    MenuAeroporto(listaAeronave, listaPassagem, listaPassageiro);
                     break;
                 default:
                     Console.WriteLine("Opção inválida");
@@ -70,6 +71,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
 
         public void MenuCompra(List<ILoja> lojas, List<IProduto> produtos, List<IProduto> produtosCompradosTotal){
             CarrinhoCompra novaCompra = new CarrinhoCompra(lojas, produtos, produtosCompradosTotal);
+
             Console.WriteLine("\nRealizar compras:");
             Console.WriteLine("1 - Comprar em uma loja");
             Console.WriteLine("2 - Listar todos produtos comprados");
@@ -78,24 +80,104 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             novaCompra.SelectOptionProduto(Convert.ToInt32(Console.ReadLine()));
         }
 
+        public void MenuAeroporto(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
+            Console.WriteLine("\nBem vindos ao Aeroporto!:");
+            Console.WriteLine("1 - Hangar");
+            Console.WriteLine("2 - Nossa companhia aérea");
+            Console.WriteLine("3 - Registro de bagagens");
+            Console.WriteLine("0 - Voltar ao menu inicial do Shopping");
+            Console.Write("Opção: ");
+
+            int option = Convert.ToInt32(Console.ReadLine());
+            switch(option){
+                case 0:
+                    MenuInicial();
+                    break;
+                case 1:
+                    MenuHangar(listaAeronave, listaPassagem, listaPassageiro);
+                    break;
+                case 2:
+                    MenuShoppingAirlines(listaAeronave, listaPassagem, listaPassageiro);
+                    break;
+                case 3:
+                    MenuBagagem(listaAeronave, listaPassagem, listaPassageiro);
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida");
+                    break;
+            }
+        }
+
+        public void MenuShoppingAirlines(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
+            Console.WriteLine("\nBem vindos a Shopping Airlines!:");
+            Console.WriteLine("1 - Cadastrar Passagens");
+            Console.WriteLine("2 - Comprar Passagens");
+            Console.WriteLine("0 - Voltar ao menu inicial do Aeroporto");
+            Console.Write("Opção: ");
+
+            int option = Convert.ToInt32(Console.ReadLine());
+            switch(option){
+
+                case 0:
+                    MenuAeroporto(listaAeronave, listaPassagem, listaPassageiro);
+                    break;
+                case 1:
+                    MenuPassagem(listaAeronave, listaPassagem, listaPassageiro);
+                    break;
+                case 2:
+                    MenuCompraPassagem(listaPassagem, listaPassageiro, listaAeronave);
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida");
+                    MenuShoppingAirlines(listaAeronave, listaPassagem, listaPassageiro);
+                    break;
+            }
+        }
+
         public void MenuPassagem(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
             Cadastro novaPassagem = new Cadastro(aeronaves, passagens, passageiros);
 
-            Console.WriteLine("\nBem vindo ao Aeroporto!");
-            Console.WriteLine("1 - Cadastrar aeronave");
-            Console.WriteLine("2 - Cadastrar passageiro(a)");
-            Console.WriteLine("3 - Cadastrar passagem");
-            Console.WriteLine("4 - Listar aeronaves cadastradas");
-            Console.WriteLine("5 - Listar passageiros(as) cadastrados(as)");
-            Console.WriteLine("6 - Listar passagens cadastradas");
-            Console.WriteLine("7 - Comprar passagem");
-            Console.WriteLine("8 - Listar passagens compradas");
-            Console.WriteLine("9 - Registrar bagagem");
-            Console.WriteLine("10 - Listar bagagens registradas");
-            Console.WriteLine("0 - Voltar ao menu inicial do shopping");
+            Console.WriteLine("\nBem vindo ao Cadastro de Passagens!");
+            Console.WriteLine("1 - Cadastrar passageiro(a)");
+            Console.WriteLine("2 - Cadastrar passagem");
+            Console.WriteLine("3 - Listar passageiros(as) cadastrados(as)");
+            Console.WriteLine("4 - Listar passagens cadastradas");
+            Console.WriteLine("0 - Voltar ao menu inicial da Shopping Airlines");
             Console.Write("Opção: ");
             novaPassagem.SelectOptionPassagem(Convert.ToInt32(Console.ReadLine()));
         }
 
+
+        public void MenuHangar(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
+            Cadastro novoHangar = new Cadastro(aeronaves, passagens, passageiros);
+
+            Console.WriteLine("1 - Cadastrar aeronave");
+            Console.WriteLine("2 - Listar aeronaves cadastradas");
+            Console.WriteLine("0 - Voltar ao menu inicial do aeroporto");
+            Console.Write("Opção: ");
+            novoHangar.SelectOptionHangar(Convert.ToInt32(Console.ReadLine()));
+        }
+
+        public void MenuBagagem(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
+            Cadastro novaBagagem = new Cadastro(aeronaves, passagens, passageiros);
+
+            Console.WriteLine("\nBem vindo ao Registro de bagagens!");
+            Console.WriteLine("1 - Registrar bagagem");
+            Console.WriteLine("2 - Listar bagagens registradas");
+            Console.WriteLine("0 - Voltar ao menu inicial do aeroporto");
+            Console.Write("Opção: ");
+            novaBagagem.SelectOptionBagagem(Convert.ToInt32(Console.ReadLine()));
+        }
+
+        public void MenuCompraPassagem(List<IPassagem> passagens, List<IPassageiro> passageiros, List<IAeronave> aeronaves){
+            CarrinhoPassagem novaCompraPassagem = new CarrinhoPassagem(passagens, passageiros, aeronaves);
+
+            Console.WriteLine("\nBem vindo à área de compra de passagens da Shopping Airlines!");
+            Console.WriteLine("1 - Comprar passagem");
+            Console.WriteLine("2 - Listar passagens compradas");
+            Console.WriteLine("0 - Voltar ao menu inicial da Shopping Airlines");
+            Console.Write("Opção: ");
+            novaCompraPassagem.SelectOptionComprarPassagem(Convert.ToInt32(Console.ReadLine()));
+        }
     }
 }

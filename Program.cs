@@ -8,7 +8,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         static Menu menu = new Menu();
         static void Main(string[] args)
         {
-            
             menu.MenuInicial();
         }
     }
