@@ -166,7 +166,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             Console.WriteLine("\nBem vindo ao Registro de bagagens!");
             Console.WriteLine("1 - Registrar bagagem");
             Console.WriteLine("2 - Listar bagagens registradas");
-            Console.WriteLine("0 - Voltar ao menu inicial do aeroporto");
+            Console.WriteLine("0 - Voltar ao menu inicial da Shopping Airlines");
             Console.Write("Opção: ");
             novaBagagem.SelectOptionBagagem(Convert.ToInt32(Console.ReadLine()));
         }

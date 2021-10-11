@@ -143,7 +143,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void SelectOptionBagagem(int option){
             switch(option){
                 case 0:
-                    menu.MenuAeroporto(aeronaves, passagens, passageiros);
+                    menu.MenuShoppingAirlines(aeronaves, passagens, passageiros);
                     break;
                 case 1:
                     RegistrarBagagem();
