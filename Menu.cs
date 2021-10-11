@@ -11,7 +11,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public static List<IAeronave> listaAeronave = new List<IAeronave>();
         public static List<IPassagem> listaPassagem = new List<IPassagem>();
         public static List<IPassageiro> listaPassageiro = new List<IPassageiro>();
-        public static List<PassagemComprada> passagensCompradas = new List<PassagemComprada>();
+        public static List<PassagemComprada> listaPassagensCompradas = new List<PassagemComprada>();
 
         public void MenuInicial(){
             Console.WriteLine("\nBem vindo ao Shopping!");
@@ -72,7 +72,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void MenuCompra(List<ILoja> lojas, List<IProduto> produtos, List<IProduto> produtosCompradosTotal){
             CarrinhoCompra novaCompra = new CarrinhoCompra(lojas, produtos, produtosCompradosTotal);
 
-            Console.WriteLine("\nRealizar compras:");
+            Console.WriteLine("\nRealizar compras no Shopping:");
             Console.WriteLine("1 - Comprar em uma loja");
             Console.WriteLine("2 - Listar todos produtos comprados");
             Console.WriteLine("0 - Voltar ao menu inicial do Shopping");
@@ -81,10 +81,9 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         }
 
         public void MenuAeroporto(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
-            Console.WriteLine("\nBem vindos ao Aeroporto!:");
+            Console.WriteLine("\nBem vindos ao Aeroporto!");
             Console.WriteLine("1 - Hangar");
-            Console.WriteLine("2 - Nossa companhia aérea");
-            Console.WriteLine("3 - Registro de bagagens");
+            Console.WriteLine("2 - Companhia aérea");
             Console.WriteLine("0 - Voltar ao menu inicial do Shopping");
             Console.Write("Opção: ");
 
@@ -99,19 +98,18 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 case 2:
                     MenuShoppingAirlines(listaAeronave, listaPassagem, listaPassageiro);
                     break;
-                case 3:
-                    MenuBagagem(listaAeronave, listaPassagem, listaPassageiro);
-                    break;
                 default:
                     Console.WriteLine("Opção inválida");
+                    MenuAeroporto(listaAeronave, listaPassagem, listaPassageiro);
                     break;
             }
         }
 
         public void MenuShoppingAirlines(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
-            Console.WriteLine("\nBem vindos a Shopping Airlines!:");
+            Console.WriteLine("\nBem vindos a Shopping Airlines!");
             Console.WriteLine("1 - Cadastro de passageiros e passagens");
             Console.WriteLine("2 - Comprar Passagens");
+            Console.WriteLine("3 - Registro de bagagens");
             Console.WriteLine("0 - Voltar ao menu inicial do Aeroporto");
             Console.Write("Opção: ");
 
@@ -125,7 +123,10 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                     MenuPassagem(listaAeronave, listaPassagem, listaPassageiro);
                     break;
                 case 2:
-                    MenuCompraPassagem(listaPassagem, listaPassageiro, listaAeronave, passagensCompradas);
+                    MenuCompraPassagem(listaPassagem, listaPassageiro, listaAeronave, listaPassagensCompradas);
+                    break;
+                case 3:
+                    MenuBagagem(listaPassagem, listaPassageiro, listaPassagensCompradas);
                     break;
                 default:
                     Console.WriteLine("Opção inválida");
@@ -137,7 +138,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void MenuPassagem(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
             Cadastro novaPassagem = new Cadastro(aeronaves, passagens, passageiros);
 
-            Console.WriteLine("\nBem vindo ao Cadastro de Passagens!");
+            Console.WriteLine("\nBem vindo ao Cadastro de Passageiros e Passagens!");
             Console.WriteLine("1 - Cadastrar passageiro(a)");
             Console.WriteLine("2 - Cadastrar passagem");
             Console.WriteLine("3 - Listar passageiros(as) cadastrados(as)");
@@ -151,6 +152,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void MenuHangar(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
             Cadastro novoHangar = new Cadastro(aeronaves, passagens, passageiros);
 
+            Console.WriteLine("\nBem vindo ao Cadastro de aeronaves!");
             Console.WriteLine("1 - Cadastrar aeronave");
             Console.WriteLine("2 - Listar aeronaves cadastradas");
             Console.WriteLine("0 - Voltar ao menu inicial do aeroporto");
@@ -158,8 +160,8 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             novoHangar.SelectOptionHangar(Convert.ToInt32(Console.ReadLine()));
         }
 
-        public void MenuBagagem(List<IAeronave> aeronaves, List<IPassagem> passagens, List<IPassageiro> passageiros){
-            Cadastro novaBagagem = new Cadastro(aeronaves, passagens, passageiros);
+        public void MenuBagagem(List<IPassagem> passagens, List<IPassageiro> passageiros, List<PassagemComprada> passagensCompradas){
+            Cadastro novaBagagem = new Cadastro(passagens, passageiros, passagensCompradas);
 
             Console.WriteLine("\nBem vindo ao Registro de bagagens!");
             Console.WriteLine("1 - Registrar bagagem");

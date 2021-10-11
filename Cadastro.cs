@@ -12,7 +12,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public static List<IProduto> produtosComprados = new List<IProduto>();
         public static List<IAeronave> aeronaves;
         public static List<IPassagem> passagens;
-        public static List<PassagemComprada> passagemComprada = new List<PassagemComprada>();
+        public static List<PassagemComprada> passagensCompradas;
         public static List<IPassageiro> passageiros;
         public static List<IBagagem> bagagens = new List<IBagagem>();
 
@@ -31,6 +31,12 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             Cadastro.aeronaves = aeronaves;
             Cadastro.passageiros = passageiros;
             Cadastro.passagens = passagens;
+        }
+
+        public Cadastro(List<IPassagem> passagens, List<IPassageiro> passageiros, List<PassagemComprada> passagensCompradas){
+            Cadastro.passageiros = passageiros;
+            Cadastro.passagens = passagens;
+            Cadastro.passagensCompradas = passagensCompradas;
         }
 
         public void SelectOption(int option) {            
@@ -116,15 +122,15 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void SelectOptionHangar(int option){
             switch(option){
                 case 0:
-                    menu.MenuInicial();
+                    menu.MenuAeroporto(aeronaves, passagens, passageiros);
                     break;
                 case 1:
                     CadastrarAeronave();
-                    menu.MenuAeroporto(aeronaves, passagens, passageiros);
+                    menu.MenuHangar(aeronaves, passagens, passageiros);
                     break;
                 case 2:
                     ListarAeronavesCadastradas();
-                    menu.MenuPassagem(aeronaves, passagens, passageiros);
+                    menu.MenuHangar(aeronaves, passagens, passageiros);
                     break;
                 default:
                     Console.WriteLine("Opção incorreta, tente novamente\n");
@@ -137,19 +143,19 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void SelectOptionBagagem(int option){
             switch(option){
                 case 0:
-                    menu.MenuInicial();
+                    menu.MenuAeroporto(aeronaves, passagens, passageiros);
                     break;
                 case 1:
                     RegistrarBagagem();
-                    menu.MenuAeroporto(aeronaves, passagens, passageiros);
+                    menu.MenuBagagem(passagens, passageiros, passagensCompradas);
                     break;
                 case 2:
                     ListarBagagensRegistradas();
-                    menu.MenuBagagem(aeronaves, passagens, passageiros);
+                    menu.MenuBagagem(passagens, passageiros, passagensCompradas);
                     break;
                 default:
                     Console.WriteLine("Opção incorreta, tente novamente\n");
-                    menu.MenuBagagem(aeronaves, passagens, passageiros);
+                    menu.MenuBagagem(passagens, passageiros, passagensCompradas);
                     break;
             }
         }
@@ -349,32 +355,42 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                 Console.Write("\nDigite o número da passagem: ");
                 numeroPassagem = Convert.ToInt32(Console.ReadLine());
 
-                int indexPassagem = passagemComprada.FindIndex(passagem => passagem.NumeroPassagem == numeroPassagem);
+                int indexPassagem = passagensCompradas.FindIndex(passagem => passagem.NumeroPassagem == numeroPassagem);
                 
                 if(indexPassagem == -1) {
                     Console.WriteLine("Passagem não disponível!");
                     menu.MenuPassagem(aeronaves, passagens, passageiros);
                 }
                 else {
-                    Console.WriteLine("Qual o tipo de Bagagem?");
+                    Console.WriteLine("\nQual o tipo de Bagagem?");
                     Console.WriteLine("1 - De Mão - até 10kg");
                     Console.WriteLine("2 - Despachada - até 23kg");
                     Console.Write("Opção: ");
                     int opcao = Convert.ToInt32(Console.ReadLine());
 
-                    Console.WriteLine("Qual o peso da Bagagem? (kg)");
+                    Console.Write("\nQual o peso em kg da Bagagem? ");
                     peso = Convert.ToInt32(Console.ReadLine());
 
-                    var passagemBuscada = (from passagem in passagemComprada
-                                where passagem.NumeroPassagem == numeroPassagem
-                                select passagem).FirstOrDefault();
-
                     if(opcao == 1) {
+                        while(peso > 10) {
+                            Console.WriteLine("Peso acima do permitido, tente novamente!");
+                            Console.Write("\nQual o peso em kg da Bagagem? ");
+                            peso = Convert.ToInt32(Console.ReadLine());
+                        }
                         tipoBagagem = "De Mão";
                     } 
                     else {
+                        while(peso > 23) {
+                            Console.WriteLine("Peso acima do permitido, tente novamente!");
+                            Console.Write("\nQual o peso em kg da Bagagem? ");
+                            peso = Convert.ToInt32(Console.ReadLine());
+                        }
                         tipoBagagem = "Despachada";
-                    }  
+                    }
+                    
+                    var passagemBuscada = (from passagem in passagensCompradas
+                                where passagem.NumeroPassagem == numeroPassagem
+                                select passagem).FirstOrDefault();
                     
                     bagagens.Add(new Bagagem(tipoBagagem, peso, passagemBuscada.NomePassageiro, passagemBuscada.NumeroPassagem));  
                 }
@@ -419,8 +435,8 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         {
             foreach (IPassagem passagem in passagens)
             {
-                Console.WriteLine($"Nº da Passagem: {passagem.NumeroPassagem} - Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Tipo Aeronave: {passagem.TipoAeronave} - Número do assento: {passagem.NumeroAssento}");
-                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - Horário de Chegada: {passagem.HorarioChegada}");
+                Console.WriteLine($"\nNº da Passagem: {passagem.NumeroPassagem} - Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Tipo Aeronave: {passagem.TipoAeronave} - Número do assento: {passagem.NumeroAssento}");
+                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida}h - Horário de Chegada: {passagem.HorarioChegada}h");
             }
         }
 
@@ -462,7 +478,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             }
         }
 
-        void ListarClientesCadastrados()
+        public static void ListarClientesCadastrados()
         {
             foreach (ICliente cliente in clientes)
             {
@@ -470,7 +486,7 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             }
         }
 
-        void ListarPassageirosCadastrados()
+        public static void ListarPassageirosCadastrados()
         {
             foreach (IPassageiro passageiro in passageiros)
             {

@@ -8,7 +8,6 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
     public class CarrinhoPassagem
     {
         List<IPassagem> passagens;
-        List<IPassagem> passagensDisponiveis = new List<IPassagem>();
         List<IPassageiro> passageiros;
         List<PassagemComprada> passagensCompradas;
         List<IAeronave> aeronaves;
@@ -25,19 +24,19 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
         public void SelectOptionComprarPassagem(int option){
             switch(option){
                 case 0:
-                    menu.MenuInicial();
+                    menu.MenuShoppingAirlines(aeronaves, passagens, passageiros);
                     break;
                 case 1:
                     ComprarPassagem();
-                    menu.MenuShoppingAirlines(aeronaves, passagens, passageiros);
+                    menu.MenuCompraPassagem(passagens, passageiros, aeronaves, passagensCompradas);
                     break;
                 case 2:
                     ListarPassagensCompradas();
-                    menu.MenuPassagem(aeronaves, passagens, passageiros);
+                    menu.MenuCompraPassagem(passagens, passageiros, aeronaves, passagensCompradas);
                     break;
                 default:
                     Console.WriteLine("Opção incorreta, tente novamente\n");
-                    menu.MenuPassagem(aeronaves, passagens, passageiros);
+                    menu.MenuCompraPassagem(passagens, passageiros, aeronaves, passagensCompradas);
                 break;
             }
         }
@@ -47,10 +46,10 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
             int numeroPassagem;
 
             Console.WriteLine("Passageiros cadastrados:");
-            ListarPassageirosCadastrados();
+            Cadastro.ListarPassageirosCadastrados();
 
-            Console.WriteLine("Passagens disponíveis:");
-            ListarPassagensCadastradas();
+            Console.WriteLine("\nPassagens disponíveis:");
+            Cadastro.ListarPassagensCadastradas();
 
             do{
                 Console.Write("\nDigite o CPF do(a) passageiro(a): ");
@@ -87,68 +86,21 @@ namespace dotnet_LetsCode_Sinqia_ProjetoShopping
                                 select passagem).FirstOrDefault();
                     
                     passagensCompradas.Add(new PassagemComprada(passageiroBuscado.NomePassageiro, passageiroBuscado.CPF, passagemBuscada.NumeroPassagem, passagemBuscada.NumeroVoo, passagemBuscada.Companhia, passagemBuscada.TipoAeronave, passagemBuscada.NumeroAssento, passagemBuscada.Origem, passagemBuscada.Destino, passagemBuscada.HorarioPartida, passagemBuscada.HorarioChegada));
-                    ListarPassagensCompradas();       
+                    Console.WriteLine($"Passagem de número {passagemBuscada.NumeroPassagem} para o passageiro(a): {passageiroBuscado.NomePassageiro} comprada com sucesso!");
+                    passagens.RemoveAt(indexPassagem);
                 }
                 Console.WriteLine("\nDeseja comprar outra passagem?");
-            } while(AdicionarNovo());
-        }
-
-        void ListarPassagensCadastradas()
-        {
-            foreach (IPassagem passagem in passagens)
-            {
-                Console.WriteLine($"Nº da Passagem: {passagem.NumeroPassagem} - Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Tipo Aeronave: {passagem.TipoAeronave} - Número do assento: {passagem.NumeroAssento}");
-                Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - Horário de Chegada: {passagem.HorarioChegada}");
-            }
+            } while(Cadastro.AdicionarNovo());
         }
 
         void ListarPassagensCompradas()
         {
             foreach (PassagemComprada passagem in passagensCompradas)
             {
-                Console.WriteLine($"Nome Passageiro: {passagem.NomePassageiro} - CPF Passageiro: {passagem.CPF}");
+                Console.WriteLine($"\nNome Passageiro: {passagem.NomePassageiro} - CPF Passageiro: {passagem.CPF}");
                 Console.WriteLine($"Nº da Passagem: {passagem.NumeroPassagem} - Nº do voo: {passagem.NumeroVoo} - Companhia Aérea: {passagem.Companhia} - Tipo Aeronave: {passagem.TipoAeronave} - Número do assento: {passagem.NumeroAssento}");
                 Console.WriteLine($"Origem: {passagem.Origem} - Destino: {passagem.Destino} - Horário de Partida: {passagem.HorarioPartida} - Horário de Chegada: {passagem.HorarioChegada}h");
             }
-        }
-
-        void ListarAeronavesCadastradas()
-        {
-            foreach (IAeronave aeronave in aeronaves)
-            {
-                Console.WriteLine($"Tipo de Aeronave: {aeronave.TipoAeronave} - Número Aeronave: {aeronave.NumeroAeronave}");
-            }
-        }
-
-        void ListarPassageirosCadastrados()
-        {
-            foreach (IPassageiro passageiro in passageiros)
-            {
-                Console.WriteLine($"Nome: {passageiro.NomePassageiro} - CPF: {passageiro.CPF}");
-            }
-        }
-
-        public static bool AdicionarNovo() {
-            bool adicionar = false;
-
-            Console.WriteLine("1 - Sim ");
-            Console.WriteLine("2 - Não ");
-            Console.Write("Opção: ");
-            int opcao = Convert.ToInt32(Console.ReadLine());
-
-            switch (opcao) {
-                case 1:
-                    adicionar = true;
-                    break;
-                case 2: 
-                    adicionar = false;
-                    break;
-                default:
-                    Console.WriteLine("Opção Invalida, não haverá novo cadastro");
-                    adicionar = false;
-                    break;
-            }       
-            return adicionar;
         }
     }
 }
